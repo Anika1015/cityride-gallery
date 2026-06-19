@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityRide Gallery – Buy, Sell & Exchange Bikes in Chattogram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --red:    #CC0000;
+      --red2:   #FF1A1A;
+      --dark:   #0A0A0A;
+      --card:   #141414;
+      --card2:  #1A1A1A;
+      --border: #2A2A2A;
+      --silver: #A0A0A0;
+      --white:  #F5F5F5;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--white); font-family: 'Inter', sans-serif; }
+
+    /* ── NAV ──────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 999;
+      background: rgba(10,10,10,0.96);
+      border-bottom: 1px solid #222;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 72px;
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+
+    .nav-logo-img {
+      width: 50px; height: 50px; border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--red);
+      box-shadow: 0 0 14px rgba(204,0,0,0.5);
+    }
+
+    .nav-brand {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700; font-size: 21px; letter-spacing: 1.5px;
+      line-height: 1.1;
+    }
+    .nav-brand em { font-style: normal; color: var(--red); }
+    .nav-sub { font-size: 9px; letter-spacing: 3px; color: var(--silver); text-transform: uppercase; }
+
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: var(--silver); text-decoration: none;
+      font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+      transition: color 0.2s; position: relative;
+    }
+    .nav-links a::after {
+      content: ""; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--red); transition: width 0.25s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--red) !important; color: var(--white) !important;
+      padding: 9px 22px; font-weight: 700 !important; border-radius: 2px;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--red2) !important; color: var(--white) !important; }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh; padding: 130px 48px 80px;
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 70% 70% at 75% 50%, #200000 0%, var(--dark) 65%);
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 80%);
+    }
+
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 420px; gap: 60px; align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(204,0,0,0.1); border: 1px solid rgba(204,0,0,0.35);
+      padding: 6px 16px; border-radius: 2px;
+      font-size: 11px; font-weight: 600; letter-spacing: 3px;
+      color: var(--red); text-transform: uppercase; margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(50px, 6.5vw, 88px);
+      font-weight: 700; line-height: 0.95; letter-spacing: 1px; margin-bottom: 24px;
+    }
+    .hero h1 em {
+      font-style: normal; color: var(--red);
+      text-shadow: 0 0 40px rgba(204,0,0,0.4);
+    }
+
+    .hero p { color: var(--silver); font-size: 17px; line-height: 1.75; max-width: 460px; margin-bottom: 40px; }
+
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .btn-main {
+      background: var(--red); color: var(--white);
+      padding: 14px 34px; font-family: 'Rajdhani', sans-serif;
+      font-weight: 700; font-size: 15px; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px;
+      box-shadow: 0 4px 24px rgba(204,0,0,0.4);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .btn-main:hover { background: var(--red2); box-shadow: 0 4px 32px rgba(204,0,0,0.6); }
+
+    .btn-ghost {
+      background: transparent; color: var(--white);
+      padding: 13px 34px; border: 1px solid #333;
+      font-family: 'Rajdhani', sans-serif; font-weight: 600;
+      font-size: 15px; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--red); color: var(--red); }
+
+    /* Hero right card */
+    .hero-card {
+      background: var(--card); border: 1px solid #222; border-radius: 4px; overflow: hidden;
+      border-top: 3px solid var(--red);
+    }
+
+    .hero-card-logo {
+      background: #0f0000; padding: 36px 24px;
+      display: flex; flex-direction: column; align-items: center;
+      border-bottom: 1px solid #1f0000;
+    }
+
+    .hero-card-logo img {
+      width: 160px; height: 160px; border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--red);
+      box-shadow: 0 0 40px rgba(204,0,0,0.4), 0 0 80px rgba(204,0,0,0.15);
+      margin-bottom: 16px;
+    }
+
+    .hero-card-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 20px; font-weight: 700; letter-spacing: 2px; text-align: center;
+    }
+    .hero-card-name em { font-style: normal; color: var(--red); }
+    .hero-card-tagline {
+      font-size: 10px; letter-spacing: 4px; color: var(--silver);
+      text-transform: uppercase; margin-top: 4px;
+    }
+
+    .hero-card-stats {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+    .hcs {
+      padding: 18px 12px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .hcs:last-child { border-right: none; }
+    .hcs-num { font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; color: var(--red); display: block; }
+    .hcs-label { font-size: 9px; color: var(--silver); letter-spacing: 1px; text-transform: uppercase; }
+
+    .hero-card-services { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+    .hcsvc {
+      padding: 16px 12px; text-align: center;
+      border-right: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .hcsvc:last-child { border-right: none; }
+    .hcsvc:hover { background: rgba(204,0,0,0.07); }
+    .hcsvc-icon { font-size: 20px; display: block; margin-bottom: 5px; }
+    .hcsvc-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--silver); }
+
+    /* ── TRUST STRIP ──────────────────────────────────────── */
+    .trust {
+      background: #0f0000; border-top: 1px solid #2a0000; border-bottom: 1px solid #2a0000;
+      padding: 28px 48px;
+      display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 36px; border-right: 1px solid #2a0000;
+    }
+    .trust-item:last-child { border-right: none; }
+    .trust-icon { font-size: 22px; }
+    .trust-text strong { display: block; font-size: 14px; font-weight: 600; color: var(--white); }
+    .trust-text span { font-size: 12px; color: var(--silver); }
+
+    /* ── SERVICES ─────────────────────────────────────────── */
+    .services { padding: 100px 48px; background: #0f0f0f; border-top: 1px solid var(--border); }
+    .section-wrap { max-width: 1200px; margin: 0 auto; }
+    .section-eye { font-size: 11px; font-weight: 700; letter-spacing: 4px; color: var(--red); text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-family: 'Rajdhani', sans-serif; font-size: clamp(32px, 4vw, 52px); font-weight: 700; letter-spacing: 1px; margin-bottom: 56px; }
+
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+
+    .svc-card {
+      background: var(--card); padding: 44px 36px; position: relative; overflow: hidden;
+      transition: background 0.25s;
+    }
+    .svc-card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--red); transform: scaleX(0); transition: transform 0.3s;
+    }
+    .svc-card:hover { background: var(--card2); }
+    .svc-card:hover::before { transform: scaleX(1); }
+
+    .svc-num { font-family: 'Rajdhani', sans-serif; font-size: 52px; font-weight: 700; color: rgba(204,0,0,0.1); line-height: 1; margin-bottom: 12px; }
+    .svc-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+    .svc-card h3 { font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: 1px; margin-bottom: 12px; }
+    .svc-card p { font-size: 14px; color: var(--silver); line-height: 1.75; }
+
+    /* ── INVENTORY ────────────────────────────────────────── */
+    .inventory { padding: 100px 48px; background: var(--dark); border-top: 1px solid var(--border); }
+
+    .bikes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+
+    .bike-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 3px; overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .bike-card:hover { border-color: var(--red); transform: translateY(-4px); }
+
+    .bike-img {
+      width: 100%; height: 200px; object-fit: cover;
+      background: var(--card2); display: flex; align-items: center; justify-content: center;
+      font-size: 48px; color: #333;
+    }
+    .bike-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .bike-info { padding: 20px; }
+    .bike-name { font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+    .bike-price { font-size: 22px; font-weight: 700; color: var(--red); margin-bottom: 12px; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
+
+    .bike-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .bike-tag {
+      background: rgba(204,0,0,0.1); border: 1px solid rgba(204,0,0,0.2);
+      color: var(--silver); font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 2px; letter-spacing: 0.5px;
+    }
+
+    .bike-cta {
+      display: block; text-align: center;
+      background: var(--red); color: var(--white); padding: 10px;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .bike-cta:hover { background: var(--red2); }
+
+    .inventory-placeholder {
+      background: var(--card); border: 1px solid var(--border);
+      border-top: 3px solid var(--red);
+      padding: 60px; text-align: center;
+    }
+
+    /* ── WHY US ───────────────────────────────────────────── */
+    .why { padding: 100px 48px; background: #0f0f0f; border-top: 1px solid var(--border); }
+    .why-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .why h2 { font-family: 'Rajdhani', sans-serif; font-size: clamp(32px,4vw,52px); font-weight: 700; margin-bottom: 16px; letter-spacing: 1px; }
+    .why-desc { color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 36px; }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-box { background: var(--card); border: 1px solid var(--border); border-bottom: 3px solid var(--red); padding: 22px 20px; }
+    .stat-num { font-family: 'Rajdhani', sans-serif; font-size: 40px; font-weight: 700; color: var(--red); display: block; line-height: 1; }
+    .stat-label { font-size: 11px; color: var(--silver); letter-spacing: 0.5px; margin-top: 4px; }
+
+    .features { display: flex; flex-direction: column; gap: 12px; }
+    .feature-row {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px 22px; background: var(--card); border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .feature-row:hover { border-color: var(--red); }
+    .feature-dot { width: 10px; height: 10px; min-width: 10px; background: var(--red); border-radius: 50%; margin-top: 5px; }
+    .feature-row h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .feature-row p { font-size: 13px; color: var(--silver); line-height: 1.6; }
+
+    /* ── CONTACT ──────────────────────────────────────────── */
+    .contact { padding: 100px 48px; background: var(--dark); border-top: 1px solid var(--border); }
+    .contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+    .contact h2 { font-family: 'Rajdhani', sans-serif; font-size: clamp(32px,4vw,52px); font-weight: 700; letter-spacing: 1px; margin-bottom: 12px; }
+    .contact-desc { color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 32px; }
+
+    .cc { display: flex; gap: 14px; align-items: flex-start; padding: 18px; background: var(--card); border: 1px solid var(--border); margin-bottom: 10px; transition: border-color 0.2s; }
+    .cc:hover { border-color: var(--red); }
+    .cc-icon { width: 40px; height: 40px; min-width: 40px; background: rgba(204,0,0,0.1); border: 1px solid rgba(204,0,0,0.25); display: flex; align-items: center; justify-content: center; font-size: 16px; border-radius: 2px; }
+    .cc-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--red); text-transform: uppercase; margin-bottom: 3px; }
+    .cc-value { font-size: 14px; color: var(--silver); line-height: 1.5; }
+    .cc-value a { color: inherit; text-decoration: none; }
+    .cc-value a:hover { color: var(--red); }
+
+    .hours-box { background: var(--card); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; }
+    .hours-ttl { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 2px; margin-bottom: 18px; color: var(--white); }
+    .hrow { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .hrow:last-child { border-bottom: none; }
+    .hrow .day { color: var(--silver); }
+    .hrow .time { color: var(--red); font-weight: 600; }
+
+    .form-box { background: var(--card); border: 1px solid var(--border); padding: 28px; }
+    .form-ttl { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1px; margin-bottom: 18px; }
+    .fi { width: 100%; background: var(--dark); border: 1px solid var(--border); color: var(--white); padding: 11px 14px; margin-bottom: 10px; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; border-radius: 2px; transition: border-color 0.2s; }
+    .fi:focus { border-color: var(--red); }
+    .fi::placeholder { color: #3a3a3a; }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+    footer { background: #060606; border-top: 1px solid var(--border); padding: 36px 48px 20px; }
+    .footer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 24px; }
+    .footer-logo-wrap { display: flex; align-items: center; gap: 12px; }
+    .footer-logo-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--red); }
+    .footer-brand-text { font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 1.5px; }
+    .footer-brand-text em { font-style: normal; color: var(--red); }
+    .footer-sub { font-size: 10px; letter-spacing: 3px; color: var(--silver); }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: var(--silver); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--red); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 16px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .footer-bottom p { font-size: 12px; color: #444; }
+
+    /* ── RESPONSIVE ───────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .services, .inventory, .why, .contact { padding: 60px 20px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .why-inner, .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+      .trust { padding: 20px; }
+      .trust-item { padding: 8px 16px; }
+      footer { padding: 28px 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <img src="logo.jpg" alt="CityRide Gallery Logo" class="nav-logo-img">
+   <div>
+  <div class="nav-brand">City<em>Ride</em> Gallery</div>
+  <div class="nav-sub">Ride With Trust</div>
+   <div style="font-size:10px; color:var(--silver); letter-spacing:2px;">
+    Since 08 June 2026
+  </div>
+  
+</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#inventory">Bikes</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="tel:+8801601590420" class="nav-cta">📞 Call Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">⚡ Chattogram's Trusted Bike Marketplace</div>
+      <h1>Buy. Sell.<br><em>Exchange.</em><br>Ride With Trust.</h1>
+      <p>We provide the best quality second-hand bike buying, selling, and exchange services. Located at Bahaddarhat, serving all of Chattogram Division.</p>
+      
+      <div class="hero-btns">
+        <a href="#inventory" class="btn-main">Browse Bikes</a>
+        <a href="#contact" class="btn-ghost">Contact Us</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-logo">
+        <img src="logo.jpg" alt="CityRide Gallery">
+        <div class="hero-card-name">City<em>Ride</em> Gallery</div>
+        <div class="hero-card-tagline">Ride With Trust</div>
+      </div>
+      <div class="hero-card-stats">
+        <div class="hcs"><span class="hcs-num">10+</span><span class="hcs-label">Bikes Sold</span></div>
+        <div class="hcs"><span class="hcs-num">100%</span><span class="hcs-label">Verified</span></div>
+        <div class="hcs"><span class="hcs-num">13H</span><span class="hcs-label">Open Daily</span></div>
+      </div>
+      <div class="hero-card-services">
+        <div class="hcsvc"><span class="hcsvc-icon">🛒</span><span class="hcsvc-label">Buy</span></div>
+        <div class="hcsvc"><span class="hcsvc-icon">🏷️</span><span class="hcsvc-label">Sell</span></div>
+        <div class="hcsvc"><span class="hcsvc-icon">🔄</span><span class="hcsvc-label">Exchange</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust">
+  <div class="trust-item"><span class="trust-icon">✅</span><div class="trust-text"><strong>Verified Bikes Only</strong><span>Every bike inspected before listing</span></div></div>
+  <div class="trust-item"><span class="trust-icon">💰</span><div class="trust-text"><strong>Fair Market Pricing</strong><span>No hidden charges, ever</span></div></div>
+  <div class="trust-item"><span class="trust-icon">📄</span><div class="trust-text"><strong>Paperwork Handled</strong><span>Full ownership transfer support</span></div></div>
+  <div class="trust-item"><span class="trust-icon">🕙</span><div class="trust-text"><strong>Open 10AM – 11PM</strong><span>Saturday to Thursday</span></div></div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-wrap">
+    <p class="section-eye">What We Offer</p>
+    <h2 class="section-title">Our Services</h2>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-num">01</div>
+        <span class="svc-icon">🛒</span>
+        <h3>Buy a Bike</h3>
+        <p>Browse our handpicked inventory of quality second-hand bikes. Every bike is thoroughly inspected and priced at fair market value — no surprises.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">02</div>
+        <span class="svc-icon">🏷️</span>
+        <h3>Sell Your Bike</h3>
+        <p>Get the best value for your bike fast. We offer honest market-rate valuations and handle all the paperwork so you can sell without the stress.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">03</div>
+        <span class="svc-icon">🔄</span>
+        <h3>Exchange</h3>
+        <p>Want to upgrade your ride? Exchange your current bike and get a fair deal toward any bike in our gallery. Simple, fast and transparent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVENTORY -->
+<section class="inventory" id="inventory">
+  <div class="section-wrap">
+    <p class="section-eye">Available Now</p>
+    <h2 class="section-title">Our Bikes</h2>
+    <div class="bikes-grid">
+
+      <!-- ── BIKE CARD: Yamaha FZS V2 ── -->
+      <div class="bike-card">
+
+        <!-- Slideshow -->
+        <div style="position:relative; overflow:hidden; background:#111;">
+          <div id="fzs-slides" style="display:flex; transition:transform 0.4s ease;">
+            <img src="fzs1.jpg" alt="Yamaha FZS V2" style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+            <img src="fzs2.jpg" alt="Yamaha FZS V2" style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+            <img src="fzs3.jpg" alt="Yamaha FZS V2" style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+            <img src="fzs4.jpg" alt="Yamaha FZS V2" style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+            <img src="fzs5.jpg" alt="Yamaha FZS V2" style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+            
+          </div>
+          <!-- Prev / Next buttons -->
+          <button onclick="fzsSlide(-1)"
+            style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);color:white;border:none;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">&#8249;</button>
+          <button onclick="fzsSlide(1)"
+            style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);color:white;border:none;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">&#8250;</button>
+          <!-- Dots -->
+          <div id="fzs-dots" style="position:absolute;bottom:8px;width:100%;display:flex;justify-content:center;gap:6px;">
+            <span onclick="fzsGoto(0)" style="width:8px;height:8px;border-radius:50%;background:var(--red);cursor:pointer;display:inline-block;"></span>
+            <span onclick="fzsGoto(1)" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;display:inline-block;"></span>
+            <span onclick="fzsGoto(2)" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;display:inline-block;"></span>
+            <span onclick="fzsGoto(3)" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;display:inline-block;"></span>
+            <span onclick="fzsGoto(4)" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;display:inline-block;"></span>
+
+          </div>
+          <!-- Photo counter -->
+          <div id="fzs-counter" style="position:absolute;top:8px;right:10px;background:rgba(0,0,0,0.6);color:white;font-size:11px;padding:2px 8px;border-radius:10px;">1 / 5</div>
+        </div>
+
+        <div class="bike-info">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+            <div class="bike-name">Yamaha FZS V2</div>
+            <div style="background:rgba(0,180,0,0.12); border:1px solid rgba(0,180,0,0.3); color:#4caf50; font-size:10px; font-weight:700; padding:3px 10px; border-radius:2px; letter-spacing:1px;">AVAILABLE</div>
+          </div>
+          <div class="bike-price">Call for Price</div>
+          <div class="bike-tags">
+            <span class="bike-tag">📅 2025 Model</span>
+            <span class="bike-tag">🛣️ 1,771 km</span>
+            <span class="bike-tag">📋 On Test</span>
+            <span class="bike-tag">✅ File Ready</span>
+            <span class="bike-tag">⭐ Like New</span>
+          </div>
+          <p style="font-size:13px; color:var(--silver); line-height:1.6; margin-bottom:14px; font-style:italic;">
+            "Ride with Style, Feel the Power" — একদম নতুনের মতো কন্ডিশন। Ready to Rule the Road!
+          </p>
+          <a href="tel:+8801601590420" class="bike-cta">📞 Call 01601-590420</a>
+          <a href="tel:+8801683625690" class="bike-cta">📞 Call 01683-625690</a>
+        </div>
+      </div>
+
+      <script>
+        var fzsIndex = 0;
+        var fzsTotal = 5;
+
+        function fzsUpdate() {
+          document.getElementById('fzs-slides').style.transform = 'translateX(-' + (fzsIndex * 100) + '%)';
+          document.getElementById('fzs-counter').textContent = (fzsIndex + 1) + ' / ' + fzsTotal;
+          var dots = document.getElementById('fzs-dots').children;
+          for (var i = 0; i < dots.length; i++) {
+            dots[i].style.background = i === fzsIndex ? 'var(--red)' : 'rgba(255,255,255,0.4)';
+          }
+        }
+
+        function fzsSlide(dir) {
+          fzsIndex = (fzsIndex + dir + fzsTotal) % fzsTotal;
+          fzsUpdate();
+        }
+
+        function fzsGoto(i) {
+          fzsIndex = i;
+          fzsUpdate();
+        }
+
+        // Auto-slide every 3 seconds
+        setInterval(function() { fzsSlide(1); }, 3000);
+      </script>
+
+      <!-- ── ADD MORE BIKE CARDS BELOW THIS LINE ── -->
+
+       <!-- ── BIKE CARD: TVS Apache RTR── -->
+       <div class="bike-card">
+
+  <!-- Slideshow -->
+  <div style="position:relative; overflow:hidden; background:#111;">
+    <div id="apache-slides" style="display:flex; transition:transform 0.4s ease;">
+
+      <img src="apache1.jpg" alt="TVS Apache RTR"
+        style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+
+      <img src="apache2.jpg" alt="TVS Apache RTR"
+        style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+
+      <img src="apache3.jpg" alt="TVS Apache RTR"
+        style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+
+      <img src="apache4.jpg" alt="TVS Apache RTR"
+        style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+      <img src="apache5.jpg" alt="TVS Apache RTR"
+        style="min-width:100%; height:220px; object-fit:cover;" onerror="this.style.display='none'">
+    
+
+    </div>
+
+    <!-- Prev / Next buttons -->
+    <button onclick="apacheSlide(-1)"
+      style="position:absolute;left:8px;top:50%;transform:translateY(-50%);
+      background:rgba(0,0,0,0.6);color:white;border:none;width:32px;height:32px;
+      border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+      &#8249;
+    </button>
+
+    <button onclick="apacheSlide(1)"
+      style="position:absolute;right:8px;top:50%;transform:translateY(-50%);
+      background:rgba(0,0,0,0.6);color:white;border:none;width:32px;height:32px;
+      border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+      &#8250;
+    </button>
+
+    <!-- Dots -->
+    <div id="apache-dots"
+      style="position:absolute;bottom:8px;width:100%;display:flex;justify-content:center;gap:6px;">
+
+      <span onclick="apacheGoto(0)"
+        style="width:8px;height:8px;border-radius:50%;background:var(--red);cursor:pointer;"></span>
+
+      <span onclick="apacheGoto(1)"
+        style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;"></span>
+
+      <span onclick="apacheGoto(2)"
+        style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;"></span>
+
+      <span onclick="apacheGoto(3)"
+        style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;"></span>
+      <span onclick="apacheGoto(4)"
+        style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;"></span>
+    </div>
+
+    <!-- Counter -->
+    <div id="apache-counter"
+      style="position:absolute;top:8px;right:10px;background:rgba(0,0,0,0.6);
+      color:white;font-size:11px;padding:2px 8px;border-radius:10px;">
+      1 / 5
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="bike-info">
+
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+      <div class="bike-name">TVS Apache RTR</div>
+
+      <div style="background:rgba(0,180,0,0.12); border:1px solid rgba(0,180,0,0.3);
+      color:#4caf50; font-size:10px; font-weight:700; padding:3px 10px;
+      border-radius:2px; letter-spacing:1px;">
+        AVAILABLE
+      </div>
+    </div>
+
+    <div class="bike-price">Call for Price</div>
+
+    <div class="bike-tags">
+      <span class="bike-tag">📅 2023 Model</span>
+      <span class="bike-tag">🔢 19,999 km</span>
+      <span class="bike-tag">📄 Documents Running</span>
+      <span class="bike-tag">🔖 Serial 19</span>
+      <span class="bike-tag">🔥 Sporty Performance</span>
+    </div>
+
+    <p style="font-size:13px; color:var(--silver); line-height:1.6;
+      margin-bottom:14px; font-style:italic;">
+      "Ride with Style, Feel the Power" — Sporty look & powerful performance.
+      Smooth ride • smart choice • ready to go!
+    </p>
+
+    <a href="tel:+8801601590420" class="bike-cta">📞 Call 01601-590420</a>
+    <a href="tel:+8801683625690" class="bike-cta">📞 Call 01683-625690</a>
+
+  </div>
+</div>
+     <script>
+  var apacheIndex = 0;
+  var apacheTotal = 5;
+
+  function apacheUpdate() {
+    document.getElementById('apache-slides').style.transform =
+      'translateX(-' + (apacheIndex * 100) + '%)';
+
+    document.getElementById('apache-counter').textContent =
+      (apacheIndex + 1) + ' / ' + apacheTotal;
+
+    var dots = document.getElementById('apache-dots').children;
+
+    for (var i = 0; i < dots.length; i++) {
+      dots[i].style.background =
+        i === apacheIndex ? 'var(--red)' : 'rgba(255,255,255,0.4)';
+    }
+  }
+
+  function apacheSlide(dir) {
+    apacheIndex = (apacheIndex + dir + apacheTotal) % apacheTotal;
+    apacheUpdate();
+  }
+
+  function apacheGoto(i) {
+    apacheIndex = i;
+    apacheUpdate();
+  }
+
+  // Auto-slide every 3 seconds
+  setInterval(function () {
+    apacheSlide(1);
+  }, 3000);
+</script>
+       
+<!-- ── BIKE CARD: Glamaur 125── -->
+
+ <div class="bike-card">
+
+  <!-- Image -->
+  <div style="position:relative; overflow:hidden; background:#111;">
+    <img src="glamaur.jpg"
+      alt="Glamaur 125"
+      style="width:100%; height:220px; object-fit:cover;"
+      onerror="this.style.display='none'">
+
+    <!-- Counter (optional fixed) -->
+    <div style="position:absolute;top:8px;right:10px;background:rgba(0,0,0,0.6);
+      color:white;font-size:11px;padding:2px 8px;border-radius:10px;">
+      1 / 1
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="bike-info">
+
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+      <div class="bike-name">Glamaur 125 </div>
+
+      <div style="background:rgba(0,180,0,0.12); border:1px solid rgba(0,180,0,0.3);
+      color:#4caf50; font-size:10px; font-weight:700; padding:3px 10px;
+      border-radius:2px; letter-spacing:1px;">
+        AVAILABLE
+      </div>
+    </div>
+
+    <div class="bike-price">Call for Price</div>
+
+    <div class="bike-tags">
+      <span class="bike-tag">📅 Model – 2021</span>
+      <span class="bike-tag">🔢 ODO – 16,400 Km</span>
+      <span class="bike-tag">📄 Documents Running</span>
+      <span class="bike-tag">🔖 Serial – 19</span>
+      <span class="bike-tag">❌ Fail Date – 18/08/2023</span>
+      <span class="bike-tag">✨ Sporty Look & Performance</span>
+    </div>
+
+    <p style="font-size:13px; color:var(--silver); line-height:1.6;
+      margin-bottom:14px; font-style:italic;">
+      💥 Smooth Ride • Smart Choice • Ready to Go 💥
+    </p>
+
+    <a href="tel:+8801601590420" class="bike-cta">📞 Call 01601-590420</a>
+    <a href="tel:+8801683625690" class="bike-cta">📞 Call 01683-625690</a>
+
+  </div>
+</div>
+
+<!-- ── BIKE CARD: Avenger── -->
+
+<div class="bike-card">
+
+  <!-- Image -->
+  <div style="position:relative; overflow:hidden; background:#111;">
+    <img src="avenger.jpg"
+      alt="Bajaj Avenger"
+      style="width:100%; height:220px; object-fit:cover;"
+      onerror="this.style.display='none'">
+
+    <!-- Counter -->
+    <div style="position:absolute;top:8px;right:10px;background:rgba(0,0,0,0.6);
+      color:white;font-size:11px;padding:2px 8px;border-radius:10px;">
+      1 / 1
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="bike-info">
+
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+      <div class="bike-name">Avenger</div>
+
+      <div style="background:rgba(0,180,0,0.12); border:1px solid rgba(0,180,0,0.3);
+      color:#4caf50; font-size:10px; font-weight:700; padding:3px 10px;
+      border-radius:2px; letter-spacing:1px;">
+        AVAILABLE
+      </div>
+    </div>
+
+    <div class="bike-price">Call for Price</div>
+
+    <div class="bike-tags">
+      <span class="bike-tag">📅 Model – 2018</span>
+      <span class="bike-tag">🔢 ODO – 30,000 Km</span>
+      <span class="bike-tag">📄 Documents Running</span>
+      <span class="bike-tag">🔖 Serial – 14</span>
+      <span class="bike-tag">✨ Sporty Look & Performance</span>
+    </div>
+
+    <p style="font-size:13px; color:var(--silver); line-height:1.6;
+      margin-bottom:14px; font-style:italic;">
+      💥 Smooth Ride • Smart Choice • Ready to Go 💥
+    </p>
+
+    <a href="tel:+8801601590420" class="bike-cta">📞 Call 01601-590420</a>
+    <a href="tel:+8801683625690" class="bike-cta">📞 Call 01683-625690</a>
+
+  </div>
+</div>
+   <!-- last one -->
+  
+    </div>
+    
+
+    <p style="text-align:center; color:var(--silver); font-size:13px; margin-top:32px;">
+      More bikes available in gallery —
+       <a href="tel:+8801601590420" style="color:var(--red); text-decoration:none;">call us at 01601-590420</a>,
+       <a href="tel:+8801683625690" style="color:var(--red); text-decoration:none;">01683-625690</a> for full inventory.
+    </p>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="why-inner">
+    <div>
+      <p class="section-eye">Why Choose Us</p>
+      <h2>Chattogram's Most Trusted Bike Gallery</h2>
+      <p class="why-desc">Since opening at Bahaddarhat, we've built our reputation on one thing: honest deals. No hidden charges, no surprises — just quality bikes and straightforward service.</p>
+      <div class="stats-grid">
+        <div class="stat-box"><span class="stat-num">10+</span><div class="stat-label">Bikes Sold</div></div>
+        <div class="stat-box"><span class="stat-num">13hrs</span><div class="stat-label">Open Daily</div></div>
+        <div class="stat-box"><span class="stat-num">100%</span><div class="stat-label">Verified Inventory</div></div>
+        <div class="stat-box"><span class="stat-num">#1</span><div class="stat-label">Bahaddarhat Gallery</div></div>
+      </div>
+    </div>
+    <div class="features">
+      <div class="feature-row"><div class="feature-dot"></div><div><h4>Honest Pricing</h4><p>Every bike is priced at real market value. No inflated numbers — what you see is what you pay.</p></div></div>
+      <div class="feature-row"><div class="feature-dot"></div><div><h4>Thoroughly Inspected</h4><p>We check every bike before it enters our gallery so you buy with full confidence.</p></div></div>
+      <div class="feature-row"><div class="feature-dot"></div><div><h4>Paperwork Handled</h4><p>We manage all ownership transfer documents so you can ride away stress-free.</p></div></div>
+      <div class="feature-row"><div class="feature-dot"></div><div><h4>Always Reachable</h4><p>Call or message any day between 10AM and 11PM — we respond fast.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div>
+      <p class="section-eye">Find Us</p>
+      <h2>Get In Touch</h2>
+      <p class="contact-desc">Visit our gallery in person or reach out before coming. We're happy to share details about current inventory and answer any questions.</p>
+      <div class="cc"><div class="cc-icon">📍</div><div><div class="cc-label">Address</div><div class="cc-value">West side of New Chandgaon Thana,<br>Shah Amanat Bridge Connecting Road,<br>Bahaddarhat, Chattogram — 4212</div></div></div>
+      <div class="cc"><div class="cc-icon">📞</div><div><div class="cc-label">Phone</div><div class="cc-value"><a href="tel:+8801601590420">01601-590420</a><br>
+      <a href="tel:+8801683625690">01683-625690</a></div></div></div>
+      <div class="cc"><div class="cc-icon">✉️</div><div><div class="cc-label">Email</div><div class="cc-value"><a href="mailto:cityridegallery@gmail.com">cityridegallery@gmail.com</a></div></div></div>
+      <div class="cc"><div class="cc-icon">🗺️</div><div><div class="cc-label">Service Area</div><div class="cc-value">Chittagong Division, Bangladesh</div></div></div>
+    </div>
+    <div>
+      <div class="hours-box">
+        <div class="hours-ttl">🕙 Opening Hours</div>
+        <div class="hrow"><span class="day">Saturday – Thursday</span><span class="time">10:00 AM – 11:00 PM</span></div>
+        <div class="hrow"><span class="day">Friday</span><span class="time">Closed</span></div>
+        <div class="hrow"><span class="day">Phone</span><span class="time">01601-590420 , 01683-625690 </span></div>
+       
+      </div>
+      <div class="form-box">
+        <div class="form-ttl">Send an Enquiry</div>
+        <input class="fi" type="text" placeholder="Your Name">
+        <input class="fi" type="tel" placeholder="Your Phone Number">
+        <input class="fi" type="text" placeholder="What bike are you looking for?">
+        <textarea class="fi" rows="3" placeholder="Any other message..."></textarea>
+        <a href="mailto:cityridegallery@gmail.com" class="btn-main" style="display:inline-block; margin-top:4px;">Send Enquiry</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo-wrap">
+      <img src="logo.jpg" alt="CityRide Gallery" class="footer-logo-img">
+      <div>
+        <div class="footer-brand-text">City<em>Ride</em> Gallery</div>
+        <div class="footer-sub">Ride With Trust — Bahaddarhat, Chattogram</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#inventory">Bikes</a>
+      <a href="#why">Why Us</a>
+      <a href="#contact">Contact</a>
+      <a href="tel:+8801601590420">01601-590420</a>
+      <a href="tel:+8801683-625690">01683-625690</a>
+
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 CityRide Gallery. All rights reserved. Bahaddarhat, Chattogram 4212.</p>
+    <p>cityridegallery@gmail.com</p>
+  </div>
+</footer>
+
+</body>
+</html>
